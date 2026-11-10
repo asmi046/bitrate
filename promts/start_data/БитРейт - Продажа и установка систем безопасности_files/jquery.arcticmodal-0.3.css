@@ -1,0 +1,24 @@
+.arcticmodal-overlay,
+.arcticmodal-container { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 1000; }
+.arcticmodal-container { overflow: auto; margin: 0; padding: 0; border: 0; border-collapse: collapse; }
+*:first-child+html .arcticmodal-container { height: 100% }
+.arcticmodal-container_i { height: 100%; margin: 0 auto; }
+.arcticmodal-container_i2 { padding: 24px; margin: 0; border: 0; vertical-align: middle; }
+.arcticmodal-error { padding: 20px; border-radius: 10px; background: #000; color: #fff; }
+.arcticmodal-loading { width: 80px; height: 80px; border-radius: 10px; background: #000 url(/web/20220401233505im_/https://bitrate.msk.ru/wp-content/themes/wss/css/loading.gif) no-repeat 50% 50%; }
+/*
+     FILE ARCHIVED ON 23:35:05 Apr 01, 2022 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 22:09:42 Nov 05, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  capture_cache.get: 0.413
+  load_resource: 1873.807
+  PetaboxLoader3.resolve: 1229.237
+  PetaboxLoader3.datanode: 31.139 (2)
+  loaddict: 33.053
+*/

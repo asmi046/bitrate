@@ -1,0 +1,52 @@
+/* Form control defaults — placeholders and text selection.
+   Source: theme style.css (lines 2039-2088). */
+
+::-webkit-input-placeholder {
+  color: #666
+}
+
+::-moz-placeholder {
+  color: #666
+}
+
+:-ms-input-placeholder {
+  color: #666
+}
+
+::-ms-input-placeholder {
+  color: #666
+}
+
+::placeholder {
+  color: #666
+}
+
+::-moz-selection {
+  background-color: orange;
+  color: #fff
+}
+
+::selection {
+  background-color: orange;
+  color: #fff
+}
+
+input:focus::-webkit-input-placeholder {
+  color: transparent
+}
+
+input:focus::-moz-placeholder {
+  color: transparent
+}
+
+input:focus:-ms-input-placeholder {
+  color: transparent
+}
+
+input:focus::-ms-input-placeholder {
+  color: transparent
+}
+
+input:focus::placeholder {
+  color: transparent
+}
