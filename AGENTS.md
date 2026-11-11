@@ -55,6 +55,39 @@ vendor/bin/pint --dirty --format agent                      # after editing PHP 
 - SQLite file DB; `SESSION_DRIVER`, `CACHE_STORE`, `QUEUE_CONNECTION` are all `database`,
   so run `php artisan migrate` after touching sessions/cache/queues or requests error out.
 
+## Lead forms (backend)
+
+- Six forms post to `POST /leads` (`routes/web.php`, `name('leads.store')`): four inline
+  offer forms in `resources/views/home.blade.php` plus `callback-form` and `order-form`
+  in `resources/views/partials/modals.blade.php`. Every form carries `data-lead-form`,
+  a `name="tel"` input, hidden `msg`/`source` inputs and a real `<button type="submit">`.
+- Flow: `StoreLeadRequest` (validation, phone normalization to `+7XXXXXXXXXX`) →
+  `StoreLeadAction` (saves the lead, notifies the recipients) → `LeadNotification`
+  (mail) → `resources/views/emails/lead.blade.php`.
+- **`config/leads.php` holds the notification addresses** (`recipients`, overridable with
+  `LEADS_RECIPIENTS`), the mail subject, the rate limit and the popup messages.
+  Run `php artisan config:clear` after editing `.env`.
+- The frontend posts with ajax from `public/js/custom.js`; the result (success or error)
+  is rendered in the arcticmodal popup `#messgeModal`. The endpoint also answers a plain
+  form post with a redirect + flash message, so the forms work without javascript.
+- `LEADS_QUEUE=true` sends the mail through the queue worker, otherwise it is sent
+  synchronously with the request. `MAIL_MAILER=log` writes the mail to
+  `storage/logs/laravel.log`.
+
+## Contacts
+
+- **`config/contacts.php` holds every contact detail of the page**: company name,
+  phone (display + `tel:` link), email, address (metro landmark + full address),
+  yandex map (url, coordinates, zoom, marker icon) and the labels of the contact
+  blocks. The header, the footer and the contacts section of the home page render
+  them with `config('contacts....')` — do not hardcode phone/email/address in the views.
+- The phone icon of the header circle is `public/images/phone.svg` (the original
+  `phone.png` was not captured in the archive); the map marker is
+  `public/images/map.svg`.
+- `a.header-callback` is an anchor to `#offer-free` (the free equipment selection
+  section) and scrolls to it smoothly; `.phone-button` and `.popup-content` open the
+  callback modal.
+
 ## The port task (source material)
 
 - `promts/start.md` is the brief (the directory is literally `promts/`, sic — don't

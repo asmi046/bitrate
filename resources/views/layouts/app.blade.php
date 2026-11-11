@@ -6,6 +6,7 @@
 
     <title>@yield('title', 'БитРейт - Продажа и установка систем безопасности')</title>
     <meta name="description" content="@yield('description', 'Продажа и установка систем безопасности')">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
 
     {{-- Styles, in the same cascade order the WordPress theme used --}}
@@ -24,6 +25,10 @@
     <script src="{{ asset('js/vendor/jquery-migrate-1.4.1.min.js') }}"></script>
 </head>
 <body class="home blog hfeed">
+
+@if (session('status') === 'ok')
+    <div class="flash-message">{{ session('message') }}</div>
+@endif
 
 @include('partials.modals')
 
@@ -66,14 +71,20 @@
 <script src="{{ asset('js/vendor/jquery.scrolltofixed.min.js') }}"></script>
 <script src="{{ asset('js/vendor/arcticmodal-0.3.min.js') }}"></script>
 <script>
-    var allAjax = {"ajaxurl": "{{ route('leads.store') }}", "nonce": "{{ csrf_token() }}"};
-    jQuery(document).ajaxSend(function (event, jqxhr, settings) {
-        if (settings.type === 'POST' && settings.url === allAjax.ajaxurl) {
-            jqxhr.setRequestHeader('X-CSRF-TOKEN', allAjax.nonce);
+    window.bitrateForms = {
+        url: @json(route('leads.store')),
+        token: @json(csrf_token()),
+        messages: {
+            success: @json(config('leads.messages.success')),
+            error: @json(config('leads.messages.error')),
+            emptyPhone: @json(config('leads.messages.empty_phone')),
+            invalidPhone: @json(config('leads.messages.invalid_phone')),
+            sending: @json(config('leads.messages.sending'))
         }
-    });
+    };
 </script>
 <script src="{{ asset('js/custom.js') }}"></script>
+
 <script src="{{ asset('js/vendor/wp-embed.min.js') }}"></script>
 
 </body>

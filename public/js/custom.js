@@ -41,10 +41,13 @@ jQuery(document).ready(function ($) {
   var inputmask_96e76a5f = {"mask":"+7(999)999-99-99"};
   jQuery("input[type=tel]").inputmask(inputmask_96e76a5f);
 
-  $(".phone-button, .header-callback, .popup-content").click(function(e) {
+  $(".phone-button, .popup-content").click(function(e) {
     e.preventDefault();
     var mailmsg = $(this).data('mailmsg');
-    $('#callback-modal .uniSendBtn').attr('data-mailmsg', mailmsg);
+    if (mailmsg) {
+      $('#callback-modal input[name="msg"]').val(mailmsg);
+      $('#order-modal input[name="msg"]').val(mailmsg);
+    }
     $('#callback-modal').arcticmodal();
   });
   // $(".popup-content").click(function(e) {
@@ -69,42 +72,127 @@ jQuery(document).ready(function ($) {
     lightbox.option({
       'albumLabel': '',
     })
-  jQuery(".uniSendBtn").click(function(e){ 
-      e.preventDefault();
-      var formid = jQuery(this).data("formid");
-      var message = jQuery(this).data("mailmsg");
-      var phone = jQuery(this).siblings('input[type=tel]');
-      
-      if ((phone.val() == "")||(phone.val().indexOf("_")>0)) {
-        phone.css("background-color","#ff91a4")
-      } else {
-        var  jqXHR = jQuery.post(
-          allAjax.ajaxurl,
-          {
-            action: 'universal_send',    
-            nonce: allAjax.nonce,
-            msg: message,
-            tel: phone.val()
-          }
-          
-        );
-        
-        
-        jqXHR.done(function (responce) {
-          $.arcticmodal('close');
-          jQuery('#messgeModal #lineMsg').html("Ваша заявка принята. Мы свяжемся с Вами в ближайшее время.");
-          jQuery('#messgeModal').arcticmodal();
-          
-        });
-        
-        jqXHR.fail(function (responce) {
-          jQuery('#messgeModal #lineIcon').html('');
-          jQuery('#messgeModal #lineMsg').html("Произошла ошибка! Попробуйте позднее.");
-          jQuery('#messgeModal').arcticmodal();
-        });
-      }
+  /* Lead forms are submitted with ajax, the result is shown in a popup window. */
+  var leadForms = window.bitrateForms || {};
+  var leadMessages = leadForms.messages || {};
+
+  function escapeHtml(text) {
+    return $('<div>').text(text === undefined || text === null ? '' : text).html();
+  }
+
+  function showLeadMessage(type, text) {
+    var $modal = $('#messgeModal');
+    if (!$modal.length) {
+      return;
+    }
+
+    var isSuccess = (type === 'success');
+
+    $modal
+      .removeClass('message-modal--success message-modal--error')
+      .addClass(isSuccess ? 'message-modal--success' : 'message-modal--error');
+
+    $modal.find('#lineIcon').text(isSuccess ? '✓' : '!');
+    $modal.find('#lineMsg').html(
+      '<h2>' + (isSuccess ? 'Спасибо!' : 'Ошибка') + '</h2><p>' + escapeHtml(text) + '</p>'
+    );
+
+    $modal.arcticmodal();
+  }
+
+  $('form[data-lead-form]').on('submit', function (e) {
+    e.preventDefault();
+
+    var $form = $(this);
+    var $phone = $form.find('input[type="tel"]').first();
+    var $button = $form.find('button[type="submit"], .uniSendBtn');
+    var value = $phone.val() || '';
+    var digits = value.replace(/\D/g, '');
+    var buttonLabel = $button.text();
+
+    if (!digits) {
+      $phone.css('background-color', '#ff91a4');
+      showLeadMessage('error', leadMessages.emptyPhone);
+      $phone.trigger('focus');
+      return;
+    }
+
+    if (digits.length < 10 || value.indexOf('_') !== -1) {
+      $phone.css('background-color', '#ff91a4');
+      showLeadMessage('error', leadMessages.invalidPhone);
+      $phone.trigger('focus');
+      return;
+    }
+
+    $phone.css('background-color', '');
+
+    /* The consent checkbox may live outside of the form, next to it. */
+    var $consent = $form.find('input[name="consent"]');
+    if (!$consent.length) {
+      $consent = $form.parent().find('.form-note input[name="consent"]').first();
+    }
+
+    var data = $.grep($form.serializeArray(), function (field) {
+      return field.name !== 'consent';
     });
+    data.push({name: 'consent', value: $consent.is(':checked') ? '1' : '0'});
+    data.push({name: 'page_url', value: window.location.href});
+
+    $button.prop('disabled', true).addClass('is-loading').text(leadMessages.sending || buttonLabel);
+
+    jQuery.ajax({
+      url: leadForms.url,
+      type: 'POST',
+      dataType: 'json',
+      headers: {
+        'X-CSRF-TOKEN': leadForms.token,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json'
+      },
+      data: data
+    }).done(function (response) {
+      $form[0].reset();
+      $form.find('input[name="consent"]').prop('checked', true);
+
+      if ($form.closest('.arcticmodal-container').length) {
+        $.arcticmodal('close');
+      }
+
+      showLeadMessage('success', (response && response.message) || leadMessages.success);
+    }).fail(function (xhr) {
+      var text = leadMessages.error;
+
+      if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+        var errors = xhr.responseJSON.errors;
+        var first = errors[Object.keys(errors)[0]];
+        if (first && first.length) {
+          text = first[0];
+        }
+      }
+
+      showLeadMessage('error', text);
+    }).always(function () {
+      $button.prop('disabled', false).removeClass('is-loading').text(buttonLabel);
+    });
+  });
+
+  /* Smooth scrolling for the links that point to a section of the page. */
+  $('a[href^="#"]:not([href="#callback-modal"]):not(.link-projects)').click(function(e) {
+    var $target = $($(this).attr('href'));
+
+    if (!$target.length || $target[0].offsetParent === null) {
+      return;
+    }
+
+    e.preventDefault();
+
+    $('html, body').animate({
+      scrollTop: $target.offset().top
+    }, 400);
+  });
+
   var $page = $('html, body');
+
     $('.link-projects').click(function() {
         $page.animate({
             scrollTop: $($.attr(this, 'href')).offset().top

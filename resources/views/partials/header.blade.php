@@ -20,11 +20,11 @@
                 <div class="header-contacts__top">
                     <div class="phone-button" data-mailmsg="Заказ обратного звонка в шапке"></div>
                     <div class="header-contacts__phones">
-                        <a href="tel:+74991104613" class="header-phone mgo-number">+7 (499) 110-46-13</a>
-                        <a href="#callback-modal" class="header-callback">Заказать звонок</a>
+                        <a href="tel:{{ config('contacts.phone.link') }}" class="header-phone mgo-number">{{ config('contacts.phone.display') }}</a>
+                        <a href="#offer-free" class="header-callback">{{ config('contacts.labels.callback') }}</a>
                     </div>
                 </div>
-                <a href="mailto:bitrate.msk.ru@ya.ru" class="header-email">bitrate.msk.ru@ya.ru</a>
+                <a href="mailto:{{ config('contacts.email') }}" class="header-email">{{ config('contacts.email') }}</a>
             </div>
         </div>
     </div>

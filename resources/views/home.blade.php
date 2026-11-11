@@ -29,12 +29,15 @@
         <h2 class="section-title">При заказе от 4-х камер – еще 1 бесплатно!</h2>
         <div class="offer-descr">Количество товара по акции ограничено, успейте оформить заказ с выгодой для себя! В акции участвуют производители Esvi и Proxiscctv.</div>
         <div class="offer-text">Наши специалисты бесплатно проконсультируют Вас и помогут подобрать оптимальное решение по оборудованию и бюджету. Оставьте свой контактный телефон, и забронируйте скидку прямо сейчас!</div>
-        <form action="{{ route('leads.store') }}">
-          <input type="tel" placeholder="Ваш телефон:">
-          <a href="#" class="button uniSendBtn" data-mailmsg="Заказ c блока При заказе от 4-х камер – еще 1 бесплатно">Отправить</a>
+        <form action="{{ route('leads.store') }}" method="post" class="lead-form" data-lead-form>
+          @csrf
+          <input type="hidden" name="source" value="offer-4-cameras">
+          <input type="hidden" name="msg" value="Заказ c блока При заказе от 4-х камер – еще 1 бесплатно">
+          <input type="tel" name="tel" placeholder="Ваш телефон:" required>
+          <button type="submit" class="button uniSendBtn">Отправить</button>
         </form>
         <div class="form-note">
-          <input type="checkbox" checked="">
+          <input type="checkbox" name="consent" value="1" checked="">
           <div class="form-note__text">
             <span>Нажимая на кнопку "Оставить заявку", я даю согласие на обработку персональных данных и соглашаюсь c <a href="/politika-konfidenczialnosti/" target="_blank">политикой конфиденциальности</a></span>
           </div>
@@ -184,12 +187,15 @@
       <div class="offer-content">
         <h2 class="section-title">Не знаете, какое решение вам нужно?</h2>
         <div class="offer-text">Наши специалисты бесплатно проконсультируют Вас и помогут подобрать оптимальное решение по оборудованию и бюджету. Оставьте свой контактный телефон, и получите бесплатную консультацию прямо сейчас!</div>
-        <form action="{{ route('leads.store') }}">
-          <input type="tel" placeholder="Ваш телефон:">
-          <a href="#" class="button uniSendBtn" data-mailmsg="Заявка с блока Не знаете, какое решение вам нужно">Отправить</a>
+        <form action="{{ route('leads.store') }}" method="post" class="lead-form" data-lead-form>
+          @csrf
+          <input type="hidden" name="source" value="offer-consultation">
+          <input type="hidden" name="msg" value="Заявка с блока Не знаете, какое решение вам нужно">
+          <input type="tel" name="tel" placeholder="Ваш телефон:" required>
+          <button type="submit" class="button uniSendBtn">Отправить</button>
         </form>
         <div class="form-note">
-          <input type="checkbox" checked="">
+          <input type="checkbox" name="consent" value="1" checked="">
           <div class="form-note__text">
             <span>Нажимая на кнопку "Оставить заявку", я даю согласие на обработку персональных данных и соглашаюсь c <a href="/politika-konfidenczialnosti/" target="_blank">политикой конфиденциальности</a></span>
           </div>
@@ -416,12 +422,15 @@
       <div class="offer-content">
         <h2 class="section-title">При заказе от 8 камер жесткий диск на 1 ТБ в подарок</h2>
         <div class="offer-text">Наши специалисты бесплатно проконсультируют Вас и помогут подобрать оптимальное решение по оборудованию и бюджету. Оставьте свой контактный телефон, и получите бесплатную консультацию прямо сейчас!</div>
-        <form action="{{ route('leads.store') }}">
-          <input type="tel" placeholder="Ваш телефон:">
-          <a href="#" class="button uniSendBtn" data-mailmsg="Заявка блока При заказе от 8 камер жесткий диск на 1 ТБ в подарок">Отправить</a>
+        <form action="{{ route('leads.store') }}" method="post" class="lead-form" data-lead-form>
+          @csrf
+          <input type="hidden" name="source" value="offer-hdd-1tb">
+          <input type="hidden" name="msg" value="Заявка блока При заказе от 8 камер жесткий диск на 1 ТБ в подарок">
+          <input type="tel" name="tel" placeholder="Ваш телефон:" required>
+          <button type="submit" class="button uniSendBtn">Отправить</button>
         </form>
         <div class="form-note">
-          <input type="checkbox" checked="">
+          <input type="checkbox" name="consent" value="1" checked="">
           <div class="form-note__text">
             <span>Нажимая на кнопку "Оставить заявку", я даю согласие на обработку персональных данных и соглашаюсь c <a href="/politika-konfidenczialnosti/" target="_blank">политикой конфиденциальности</a></span>
           </div>
@@ -712,18 +721,21 @@
     </div>
   </section>
 
-  <section class="offer offer-free section-form">
+  <section class="offer offer-free section-form" id="offer-free">
     <div class="container">
       <div class="offer-photo" style="background-image: url({{ asset('images/team_new.png') }})"></div>
       <div class="offer-content">
         <h2 class="section-title">Закажите бесплатный подбор оборудования</h2>
         <div class="offer-text">Наши специалисты бесплатно проконсультируют Вас и помогут подобрать оптимальное решение по оборудованию и бюджету. Оставьте свой контактный телефон, и получите бесплатную консультацию прямо сейчас!</div>
-        <form action="{{ route('leads.store') }}">
-          <input type="tel" placeholder="Ваш телефон:">
-          <a href="#" class="button uniSendBtn" data-mailmsg="Заявка блока Закажите бесплатный подбор оборудования">Отправить</a>
+        <form action="{{ route('leads.store') }}" method="post" class="lead-form" data-lead-form>
+          @csrf
+          <input type="hidden" name="source" value="offer-equipment-selection">
+          <input type="hidden" name="msg" value="Заявка блока Закажите бесплатный подбор оборудования">
+          <input type="tel" name="tel" placeholder="Ваш телефон:" required>
+          <button type="submit" class="button uniSendBtn">Отправить</button>
         </form>
         <div class="form-note">
-          <input type="checkbox" checked="">
+          <input type="checkbox" name="consent" value="1" checked="">
           <div class="form-note__text">
             <span>Нажимая на кнопку "Оставить заявку", я даю согласие на обработку персональных данных и соглашаюсь c <a href="/politika-konfidenczialnosti/" target="_blank">политикой конфиденциальности</a></span>
           </div>
@@ -737,47 +749,51 @@
       <div class="contacts-block">
         <div class="contacts-title">Наши контакты</div>
         <div class="contacts-item">
-          <strong>Станция метро Хорошево</strong>
-          <span>г. Москва, проспект Маршала Жукова, д.2</span>
+          <strong>{{ config('contacts.address.metro') }}</strong>
+          <span>{{ config('contacts.address.full') }}</span>
         </div>
         <div class="contacts-item">
-          <span>E-mail:</span>
-          <strong>bitrate.msk.ru@ya.ru</strong>
+          <span>{{ config('contacts.labels.email') }}</span>
+          <strong>{{ config('contacts.email') }}</strong>
         </div>
         <div class="contacts-item">
-          <span>Телефон:</span>
-          <strong class="mgo-number">+7 (499) 110-46-13</strong>
+          <span>{{ config('contacts.labels.phone') }}</span>
+          <strong class="mgo-number">{{ config('contacts.phone.display') }}</strong>
         </div>
-        <a href="https://yandex.ru/maps/?text=Москва, проспект Маршала Жукова, 2" class="contacts-button button" target="_blank" rel="noopener">Как до нас добраться?</a>
+        <a href="{{ config('contacts.map.url') }}" class="contacts-button button" target="_blank" rel="noopener">{{ config('contacts.labels.route') }}</a>
       </div>
     </div>
     <div id="yandex-map" style="width: 100%; height: 500px;"></div>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script>
-        if (window.ymaps) {
-            ymaps.ready(init);
+        (function () {
+            var contacts = @json(config('contacts'));
 
-            function init() {
-                var myMap = new ymaps.Map("yandex-map", {
-                        center: [55.77724106897233, 37.50389949999997],
-                        zoom: 14,
-                        controls: ['zoomControl']
-                    }),
-                    myPlacemarkAdr = new ymaps.Placemark([55.77724106897233, 37.50389949999997], {
-                        iconContent: '',
-                        balloonContent: 'Наш адрес: <b>Москва, проспект Маршала Жукова, д.2</b><br/>Телефон: <b>+7 (499) 110-46-13</b>',
-                        hintContent: 'Наш адрес: <b>Москва, проспект Маршала Жукова, д.2</b><br/>Телефон: <b>+7 (499) 110-46-13</b>',
-                    }, {
-                        iconLayout: 'default#image',
-                        iconImageHref: '{{ asset('images/map.svg') }}',
-                        iconImageSize: [30, 54],
-                        iconImageOffset: [-15, -54]
-                    });
+            if (window.ymaps) {
+                ymaps.ready(init);
 
-                myMap.geoObjects.add(myPlacemarkAdr);
-                myMap.behaviors.disable('scrollZoom');
+                function init() {
+                    var myMap = new ymaps.Map("yandex-map", {
+                            center: [contacts.map.latitude, contacts.map.longitude],
+                            zoom: contacts.map.zoom,
+                            controls: ['zoomControl']
+                        }),
+                        myPlacemarkAdr = new ymaps.Placemark([contacts.map.latitude, contacts.map.longitude], {
+                            iconContent: '',
+                            balloonContent: 'Наш адрес: <b>' + contacts.address.full + '</b><br/>Телефон: <b>' + contacts.phone.display + '</b>',
+                            hintContent: 'Наш адрес: <b>' + contacts.address.full + '</b><br/>Телефон: <b>' + contacts.phone.display + '</b>',
+                        }, {
+                            iconLayout: 'default#image',
+                            iconImageHref: '{{ asset(config('contacts.map.icon')) }}',
+                            iconImageSize: [30, 54],
+                            iconImageOffset: [-15, -54]
+                        });
+
+                    myMap.geoObjects.add(myPlacemarkAdr);
+                    myMap.behaviors.disable('scrollZoom');
+                }
             }
-        }
+        })();
     </script>
   </section>
 

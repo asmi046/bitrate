@@ -50,3 +50,65 @@ input:focus::-ms-input-placeholder {
 input:focus::placeholder {
   color: transparent
 }
+
+/* Lead forms: submit buttons are real buttons, they have to look like links. */
+button.button,
+button.callback-link {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.button.is-loading {
+  opacity: .7;
+  cursor: default;
+}
+
+/* Lead forms: popup window with the result of the submission. */
+.message-modal {
+  padding: 30px 25px;
+  text-align: center;
+}
+
+.message-modal__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #4caf50;
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.message-modal--error .message-modal__icon {
+  background: #de4343;
+}
+
+.message-modal__text h2 {
+  margin-bottom: 10px;
+}
+
+.message-modal__text p {
+  margin: 0;
+  color: #666;
+}
+
+/* Lead forms: message of a submission made without javascript. */
+.flash-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 1001;
+  transform: translateX(-50%);
+  padding: 14px 24px;
+  border-radius: 5px;
+  background: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
+}

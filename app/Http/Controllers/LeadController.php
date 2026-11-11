@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lead;
+use App\Actions\StoreLeadAction;
+use App\Http\Requests\StoreLeadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class LeadController extends Controller
 {
     /**
-     * Store a callback request coming from the site forms.
+     * Store a lead submitted through one of the site forms.
      *
-     * The theme used to post to the WordPress admin-ajax endpoint with the
-     * `universal_send` action, so the same payload shape is accepted here.
+     * The forms are submitted with ajax, so the request is answered with a
+     * json payload that the frontend renders in a popup window. A plain form
+     * submission without javascript is redirected back to the page instead.
      */
-    public function store(Request $request): JsonResponse|RedirectResponse
+    public function store(StoreLeadRequest $request, StoreLeadAction $storeLead): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'tel' => ['required', 'string', 'max:32'],
-            'msg' => ['nullable', 'string', 'max:1000'],
-        ]);
-
-        Lead::create([
-            'tel' => $validated['tel'],
-            'msg' => $validated['msg'] ?? null,
-            'source' => $request->input('action'),
-        ]);
+        $lead = $storeLead->handle($request);
 
         if ($request->expectsJson()) {
-            return response()->json(['status' => 'ok']);
+            return response()->json([
+                'status' => 'ok',
+                'message' => config('leads.messages.success'),
+                'data' => [
+                    'id' => $lead->id,
+                ],
+            ]);
         }
 
-        return back()->with('status', 'ok');
+        return back()
+            ->with('status', 'ok')
+            ->with('message', config('leads.messages.success'));
     }
 }

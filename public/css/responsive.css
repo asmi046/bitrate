@@ -211,6 +211,11 @@
     height: 240px
   }
 
+  .offer-content,
+  .section-form .offer-content {
+    width: 100%
+  }
+
   .objects-item {
     width: 100%
   }

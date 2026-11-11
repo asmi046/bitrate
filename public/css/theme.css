@@ -219,8 +219,8 @@ a {
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 30%;
-  background-image: url(/images/phone.png);
+  background-size: 55%;
+  background-image: url(/images/phone.svg);
   margin-right: 20px;
   cursor: pointer
 }
@@ -384,6 +384,11 @@ a {
 
 .offer-text {
   margin-bottom: 26px
+}
+
+.offer-content {
+  width: 40%;
+  margin-right: auto
 }
 
 .offer .container {
@@ -645,10 +650,25 @@ input {
 }
 
 .section-form {
+  position: relative;
   color: #fff;
   background-image: url(/images/bg-form-1.jpg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
   padding-top: 0;
   padding-bottom: 0
+}
+
+.section-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .45);
+  z-index: 0
 }
 
 .section-form .button {
@@ -657,10 +677,11 @@ input {
 
 .section-form .container {
   position: relative;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end
+  z-index: 1;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start
 }
 
 .section-form .offer-photo {
@@ -677,7 +698,8 @@ input {
 }
 
 .section-form .offer-content {
-  margin-left: 300px;
+  width: 40%;
+  margin-left: 0;
   padding-top: 40px;
   padding-bottom: 45px
 }
@@ -960,6 +982,7 @@ input {
 }
 
 .advantages {
+  position: relative;
   padding-top: 46px;
   padding-bottom: 46px;
   background-repeat: no-repeat;
@@ -968,7 +991,20 @@ input {
   background-image: url(/images/bg-best.jpg)
 }
 
+.advantages::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .45);
+  z-index: 0
+}
+
 .advantages .container {
+  position: relative;
+  z-index: 1;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;

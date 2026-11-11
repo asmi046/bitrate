@@ -7,9 +7,9 @@
         <div class="footer-copy">© Все права защищены. Использование материалов сайта только с согласия правообладателей
             <a href="/politika-konfidenczialnosti/" class="color-yellow">Политика конфиденциальности</a></div>
         <div class="footer-contacts">
-            <a href="tel:+74991104613" class="footer-phone mgo-number">+7 (499) 110-46-13</a>
-            <a href="mailto:bitrate.msk.ru@ya.ru" class="footer-mail">bitrate.msk.ru@ya.ru</a>
-            <span>По общим вопросам</span>
+            <a href="tel:{{ config('contacts.phone.link') }}" class="footer-phone mgo-number">{{ config('contacts.phone.display') }}</a>
+            <a href="mailto:{{ config('contacts.email') }}" class="footer-mail">{{ config('contacts.email') }}</a>
+            <span>{{ config('contacts.labels.general_questions') }}</span>
         </div>
     </div>
 </footer>
